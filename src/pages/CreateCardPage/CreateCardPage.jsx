@@ -1,0 +1,45 @@
+import ProductForm from "../../components/ProductForm/ProductForm";
+import CatalogForm from "../../components/CatalogForm/CatalogForm";
+import {  useSelector } from "react-redux";
+import { selectFilter } from "../../redux/Filter/selectors";
+import { StyledFragment, StyledTitle, TitleWrp } from "./CreateCardPageStyled";
+import DropdownCardSelector from "../../components/DropdownCardSelect/DropdownCardSelect";
+import ModalCreateProductCard from "../../components/Modal/ModalChangeCatalog/ModalCreateProductCard/ModalCreateProductCard";
+import { useState } from "react";
+import { getCurrentProduct } from "../../redux/Product/productSelectors";
+import { useNavigate } from "react-router-dom";
+
+
+const CreateCardPage = () => {
+
+  const [showModal, setShowModal] = useState(false);
+  
+
+  const navigate = useNavigate();
+
+  const onOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const onCloseModal = () => {
+    setShowModal(false);
+    navigate("/");
+  };
+
+
+  const filter = useSelector(selectFilter);
+  
+  return (
+    <StyledFragment>
+      <TitleWrp>
+        <StyledTitle>Створити картку</StyledTitle>
+      </TitleWrp>
+      <DropdownCardSelector />
+    {filter === "Картка товару" &&  <ProductForm openModal={onOpenModal}/> }
+    {filter === "Картка каталогу" &&  <CatalogForm/> }
+    {showModal && <ModalCreateProductCard onCloseModal={onCloseModal} />}
+    </StyledFragment>
+  )
+}
+
+export default CreateCardPage;

@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "value": "f24c3a25-6b77-4fad-b146-410908eefe7f"
+        },
+        "name": {
+            "value": "SvitSvitla"
+        },
+        "location": {
+            "value": "North Europe"
+        },
+        "hostingPlanName": {
+            "value": "ASP-SvitSvitlagroup-952b"
+        },
+        "serverFarmResourceGroup": {
+            "value": "SvitSvitla_group"
+        },
+        "alwaysOn": {
+            "value": false
+        },
+        "ftpsState": {
+            "value": "FtpsOnly"
+        },
+        "sku": {
+            "value": "Free"
+        },
+        "skuCode": {
+            "value": "F1"
+        },
+        "workerSize": {
+            "value": "0"
+        },
+        "workerSizeId": {
+            "value": "0"
+        },
+        "numberOfWorkers": {
+            "value": "1"
+        },
+        "currentStack": {
+            "value": "node"
+        },
+        "phpVersion": {
+            "value": "OFF"
+        },
+        "nodeVersion": {
+            "value": "~18"
+        },
+        "repoUrl": {
+            "value": "https://github.com/NatalyKrvch/svit-svitla-app"
+        },
+        "branch": {
+            "value": "main"
+        }
+    }
+}
