@@ -5,9 +5,9 @@
   "type": "module",
   "homepage": "https://NatalyKrvch.github.io/emptyrepo/",
   "scripts": {
-    "dev": "vite",
+    "start": "vite start",
     "build": "vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint:js": "eslint src/**/*.{js,jsx}",
     "preview": "vite preview"
   },
   "dependencies": {
