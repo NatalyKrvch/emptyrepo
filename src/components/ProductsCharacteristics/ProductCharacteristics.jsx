@@ -15,6 +15,8 @@ const ProductCharacteristics = ({
   price,
   manufacturerCountry,
   characteristicArray,
+  productCategory
+
 }) => {
   return (
     <>
@@ -24,8 +26,11 @@ const ProductCharacteristics = ({
       </StyledP>
       <StyledPCountry>
         Країна <br /> походження:{" "}
-        <StyledSpanCountry>{`${manufacturerCountry}`}</StyledSpanCountry>
+        <StyledSpanCountry>{manufacturerCountry}</StyledSpanCountry>
       </StyledPCountry>
+      <StyledP>
+        Категорія: <StyledSpanCountry>{productCategory}</StyledSpanCountry>
+      </StyledP>
       {characteristicArray.length !== 0 && (
         <StyledUl>
           {characteristicArray.map((item) => (

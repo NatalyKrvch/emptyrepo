@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const CreateCardPage = () => {
 
   const [showModal, setShowModal] = useState(false);
-  
+  console.log(showModal);
 
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const CreateCardPage = () => {
 
   const onCloseModal = () => {
     setShowModal(false);
-    navigate("/");
+    navigate((filter === "Картка товару") ? "/" : "/preordercatalogue");
   };
 
 
@@ -36,8 +36,12 @@ const CreateCardPage = () => {
       </TitleWrp>
       <DropdownCardSelector />
     {filter === "Картка товару" &&  <ProductForm openModal={onOpenModal}/> }
-    {filter === "Картка каталогу" &&  <CatalogForm/> }
-    {showModal && <ModalCreateProductCard onCloseModal={onCloseModal} />}
+    {filter === "Картка каталогу" &&  <CatalogForm openModal={onOpenModal}/> }
+    {showModal && 
+    <ModalCreateProductCard 
+    onCloseModal={onCloseModal} 
+    title={(filter === "Картка товару") ? "Картка успішно створена" : "Картка каталогу успішно створена"}
+    filter={filter}/>}
     </StyledFragment>
   )
 }

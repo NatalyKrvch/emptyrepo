@@ -61,7 +61,7 @@ const QrCodeGeneration = () => {
         <StyledQrCodeWrp id="qrCodeWrapper">
           <QRCode
             id="qrCode"
-            value={`http://localhost:5173//editproductcard/${_id}`}
+            value={`http://localhost:5173/editproductcard/${_id}`}
             size={isMobile ? 128 : 624}
             fgColor="#000000"
             bgColor="#ffffff"

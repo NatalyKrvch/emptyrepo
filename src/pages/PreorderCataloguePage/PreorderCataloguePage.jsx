@@ -20,12 +20,14 @@ import ModalDeleteCatalog from "../../components/Modal/ModalChangeCatalog/ModalD
 import Notiflix from 'notiflix';
 import Pagination from "../../components/Pagination/Pagination";
 import { useMediaRules } from "../../hooks/useMediaRules";
+import ModalDeleteSuccess from "../../components/Modal/ModalDeleteSuccess/ModalDeleteSuccess";
 
 const PreorderCataloguePage = () => {
   const [fetchedCatalogsList, setFetchedCatalogsList] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [perPage, setPerPage] = useState(4);
   const [showModal, setShowModal] = useState(false);
+  const [modalDeleteSuccessOpen, setModalDeleteSuccessOpen] = useState(false);
   const [catalogName, setCatalogName] = useState("");
   const [catalogYear, setCatalogYear] = useState("");
   const [catalogId, setCatalogId] = useState("");
@@ -79,24 +81,31 @@ const PreorderCataloguePage = () => {
     setShowModal(false);
   };
 
+  const handleDeleteSuccessModal = () => {
+    setModalDeleteSuccessOpen(!modalDeleteSuccessOpen);
+ };
+
   const handleDeleteCatalog = (id) => {
     dispatch(removeCatalog(id));
     catalogsList.filter((catalog) => catalog._id !== id);
   };
 
   const handleFilterCatalog = (ev) => {
-    setFilter(ev.target.value);
+    setFilter(ev.target.value.toLowerCase());
   };
 
   const handleOnSearchButton = (name) => {
     const filteredCatalog = fetchedCatalogsList.find(
-      (catalog) => catalog.catalogName === name
+      (catalog) => catalog.catalogName.toLowerCase() === name
     );
     if (filteredCatalog) {
       setFetchedCatalogsList([filteredCatalog]);
       setFilter('');
     }
-    else {Notiflix.Notify.failure("Каталог з таким ім'ям не знайдено")}
+    else {
+      Notiflix.Notify.failure("Каталог з таким ім'ям не знайдено")
+      setFilter(''); 
+    }
     return;
   };
 
@@ -155,7 +164,13 @@ const PreorderCataloguePage = () => {
           onCloseModal={closeModal}
           catalogsList={fetchedCatalogsList}
           updateCatalogsList={updateCatalogsList}
+          onOpenDeleteSuccessModal={handleDeleteSuccessModal}
         />
+      )}
+       {modalDeleteSuccessOpen && (
+        <ModalDeleteSuccess 
+        onClose={handleDeleteSuccessModal}
+        title={"Картка каталогу успішно видалена"}/>
       )}
       {catalogsList !== 0  && 
       <Pagination 

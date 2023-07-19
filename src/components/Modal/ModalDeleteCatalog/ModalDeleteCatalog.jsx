@@ -5,7 +5,7 @@ import { removeCatalog } from "../../../../redux/Catalog/catalogOperations";
 import lampRed from "../../../../images/Popup/lamp-red@1x.png"
 
 
-const ModalDeleteCatalog = ({catalogName, catalogYear, catalogId, catalogsList,  onCloseModal, updateCatalogsList}) => {
+const ModalDeleteCatalog = ({catalogName, catalogYear, catalogId, catalogsList,  onCloseModal, updateCatalogsList, onOpenDeleteSuccessModal}) => {
     const dispatch = useDispatch();
 
     const handleDelete = (catalogId) => {
@@ -13,6 +13,7 @@ const ModalDeleteCatalog = ({catalogName, catalogYear, catalogId, catalogsList, 
        dispatch(removeCatalog(catalogId));
        updateCatalogsList(updatedList)
        onCloseModal();
+       onOpenDeleteSuccessModal();
     }
    
     return (

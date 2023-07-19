@@ -98,7 +98,7 @@ export const StyledLabel = styled.label`
   height: ${({isLoggedIn}) => isLoggedIn? '24px' : '48px' };
   width: ${({isLoggedIn}) => isLoggedIn? 'auto' : '128px' };
   font-size: ${({isLoggedIn}) => isLoggedIn? '12px' : '16px' };
-  line-height: ${({isLoggedIn}) => isLoggedIn? '2' : '1.5px' }2;
+  line-height: ${({isLoggedIn}) => isLoggedIn? '2' : '1.5px' };
   color: ${({isLoggedIn}) => isLoggedIn? 'var(--dark-grey)' : 'var(--main-black)' } ;
   background-color: ${({isLoggedIn}) => isLoggedIn? 'var(--light-blue)' : 'var(--main-white)' } ;
   padding: 0 4px;
@@ -135,7 +135,7 @@ export const StyledCoverLabel = styled.label`
 export const StyledInput = styled.input`
   width: 328px;
   padding: ${({isLoggedIn}) => isLoggedIn? '16px' : '4px' };
-  text-align:${({isLoggedIn}) => isLoggedIn? 'center' : 'start' };
+  text-align:${({isLoggedIn}) => isLoggedIn? 'left' : 'start' };
   border: ${({isLoggedIn}) => isLoggedIn? '1px solid var(--light-blue)' : 'none' };
   border-radius: 4px;
   outline: var(--dark-blue);

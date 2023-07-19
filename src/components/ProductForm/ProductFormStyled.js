@@ -225,7 +225,8 @@ margin-top: -15px;
 `
 
 
-export const StyledButtonSelect = styled.button`
+export const StyledButtonSelect = styled.span`
+display: block;
 width: 328px;
 height: 56px;
 font-size: 16px;

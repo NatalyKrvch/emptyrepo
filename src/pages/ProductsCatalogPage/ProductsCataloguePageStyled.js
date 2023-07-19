@@ -37,7 +37,7 @@ export const StyledTitle = styled.h2`
 `;
 
 export const StyledButton = styled.button`
-  width: 165px;
+  width: auto;
   height: 48px;
   margin-top: 16px;
   margin-bottom: 16px;
@@ -58,7 +58,7 @@ export const StyledButton = styled.button`
   cursor: pointer;
 
   @media screen and (min-width: 768px) {
-    width: 235px;
+    /* width: 235px; */
     height: 48px;
     font-size: 20px;
     gap: 30px;
@@ -103,7 +103,25 @@ export const StyledBtnSearch = styled.button`
   }
 `;
 
+export const StyledBtnDeleteSearch = styled.button`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: scale cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    scale: 1.2;
+  }
+`;
+
 export const StyledInput = styled.input`
+width: 232px;
   outline: none;
   border: none;
   font-weight: 400;
@@ -111,9 +129,11 @@ export const StyledInput = styled.input`
   letter-spacing: 0.5px;
 
   @media screen and (min-width: 768px) {
+    width: 395px;
   }
 
   @media screen and (min-width: 1280px) {
+    width: 508px;
     font-weight: 500;
     line-height: 29px;
     

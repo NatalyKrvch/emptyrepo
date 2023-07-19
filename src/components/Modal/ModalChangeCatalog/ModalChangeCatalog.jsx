@@ -6,6 +6,7 @@ import lampYellow from "../../../../images/Popup/lamp-yellow@1x.png"
 
 const ModalChangeCatalog = ({onCloseModal}) => {
    
+
     return (
         <Overlay>
         <ModalBody>

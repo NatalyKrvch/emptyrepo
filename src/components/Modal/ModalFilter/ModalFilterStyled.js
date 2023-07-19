@@ -18,6 +18,8 @@ export const Overlay = styled.div`
 export const ModalBody = styled.div`
   position: relative;
   max-width: 320px;
+  height: 509px;
+  overflow-y: auto;
   padding: 64px 20px 16px 20px;
   position: fixed;
   background-color: var(--main-white);
@@ -32,6 +34,7 @@ export const ModalBody = styled.div`
   @media screen and (min-width: 768px) {
     max-width: 494px;
     padding: 80px 16px 16px 16px;
+    height: 698px;
   }
 `;
 
@@ -82,6 +85,7 @@ export const StyledFiltersWrp = styled.div`
   flex-direction: column;
   gap: 16px;
   
+  
   @media screen and (min-width: 768px) {
     width: 462px;
   }
@@ -89,7 +93,7 @@ export const StyledFiltersWrp = styled.div`
 
 export const FilterBtn = styled.button`
   display: flex;
-  width: 280px;
+  width: 100%;
   height: 32px;
   padding: 6px 8px 6px 16px;
   justify-content: space-between;
@@ -106,7 +110,7 @@ export const FilterBtn = styled.button`
   cursor: pointer;
 
   @media screen and (min-width: 768px) {
-    width: 462px;
+    width: 444px;
     height: 40px;
     font-size: 18px;
     line-height: 1, 5;
@@ -160,7 +164,7 @@ export const StyledButtonChoose = styled.button`
   cursor: pointer;
 
   @media screen and (min-width: 768px) {
-    width: 462px;
+    width: 444px;
     height: 56px;
     font-size: 20px;
     line-height: 1.2;

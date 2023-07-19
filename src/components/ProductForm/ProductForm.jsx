@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { addProduct} from "../../redux/Product/productOperations";
-import { useDispatch, useSelector} from "react-redux";
-import { categoryList } from './categoryList.json'
+import { addProduct } from "../../redux/Product/productOperations";
+import { useDispatch, useSelector } from "react-redux";
+import { categoryList } from "./categoryList.json";
 import { BiPlusCircle } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { nanoid } from "nanoid";
@@ -27,11 +27,9 @@ import {
 
 import AddCharacteristicInputs from "../AddCharacteristicInputs/AddCharacteristicInputs";
 import { getCurrentProduct } from "../../redux/Product/productSelectors";
-import { GoTriangleUp,  GoTriangleDown } from "react-icons/go"
+import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
-
-
-const ProductForm = ({openModal}) => {
+const ProductForm = ({ openModal }) => {
   const [productName, setProductName] = useState("");
   const [productCode, setProductCode] = useState("");
   const [price, setPrice] = useState("");
@@ -39,16 +37,18 @@ const ProductForm = ({openModal}) => {
   const [characteristicArray, setCharacteristicArray] = useState([]);
   const [coverImage, setCoverImage] = useState(null);
   const [productImages, setProductImages] = useState("");
-  const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [coverImageUrl, setCoverImageUrl] = useState("");
   const [productImagesUrl, setProductImagesUrl] = useState([]);
-  const [category, setCategory] = useState ('');
+  const [category, setCategory] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  console.log(category);
-
+  console.log(isOpen);
 
   const dispatch = useDispatch();
-  const addedProduct = useSelector(getCurrentProduct);
+  // const addedProduct = useSelector(getCurrentProduct);
 
+  // const handleOpenOptionsCategory = () => {
+  //   setIsOpen(true);
+  // }
 
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
@@ -74,26 +74,24 @@ const ProductForm = ({openModal}) => {
 
   const handleProductImagesChange = (event) => {
     const files = event.target.files;
-    const productImagesAdded = Array.from(files); 
-    setProductImages((p)=> [...p, ...productImagesAdded]);
-    const urlArray = [...files].map(file => URL.createObjectURL(file))
-    setProductImagesUrl((p)=> [...p, ...urlArray]);
+    const productImagesAdded = Array.from(files);
+    setProductImages((p) => [...p, ...productImagesAdded]);
+    const urlArray = [...files].map((file) => URL.createObjectURL(file));
+    setProductImagesUrl((p) => [...p, ...urlArray]);
   };
-
 
   const handleDeleteCoverImg = () => {
     setCoverImage(null);
-    setCoverImageUrl('');
+    setCoverImageUrl("");
     URL.revokeObjectURL(coverImageUrl);
   };
 
   const handleDeletePhotoImg = (url) => {
-    const newProductImages = productImages.filter(card=> card !== url)
+    const newProductImages = productImages.filter((card) => card !== url);
     setProductImages(newProductImages);
     const newProductImagesUrl = productImagesUrl.filter((card) => card !== url);
     URL.revokeObjectURL(url);
     setProductImagesUrl(newProductImagesUrl);
-
   };
 
   // const handleCategoryChange = ev => {
@@ -105,27 +103,32 @@ const ProductForm = ({openModal}) => {
       setCategory(selectedOption);
       setIsOpen(false);
     }
+    return;
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();    
+    event.preventDefault();
+    console.log(category);
     const additionalAttributes = characteristicArray.map((obj) => {
-      console.log(obj);
       return { name: obj.name, value: obj.value };
     });
-    
+
     const formData = new FormData();
     formData.append("productName", productName);
     formData.append("productCode", productCode);
     formData.append("productPrice", price);
     formData.append("productCountry", manufacturerCountry);
     formData.append("productCoverURL", coverImage || "");
-    if(productImages){
+    if (productImages) {
       productImages.forEach((file) => {
         formData.append("productPhotoURL", file);
       });
     }
-    formData.append("additionalAttributes", JSON.stringify(additionalAttributes));
+    formData.append(
+      "additionalAttributes",
+      JSON.stringify(additionalAttributes)
+    );
+    formData.append("productCategory", category)
     dispatch(addProduct(formData));
     openModal();
     setProductName("");
@@ -135,6 +138,7 @@ const ProductForm = ({openModal}) => {
     setCoverImage(null);
     setProductImages([]);
     setCharacteristicArray([]);
+    setCategory('');
   };
 
   return (
@@ -190,25 +194,33 @@ const ProductForm = ({openModal}) => {
         />
       </StyledInputWrapper>
       <StyledWrpSelector>
-      <StyledLabel htmlFor="country">Оберіть категорію</StyledLabel>
-      <StyledButtonSelect onClick={() => setIsOpen(!isOpen)}>{category || "---------"} {isOpen ? <GoTriangleUp/> : <GoTriangleDown/>}</StyledButtonSelect>
-        {isOpen && (<StyledList>
-         { categoryList.map(el=> {
-          <StyledOptions onClick={()=> handleOptionClick(`${el}`)}>{el}</StyledOptions>
-         })}
-          </StyledList>)}
+        <StyledLabel htmlFor="country">Оберіть категорію</StyledLabel>
+        <StyledButtonSelect onClick={() => setIsOpen(true)}>
+          {category || "---------"}
+          {isOpen ? <GoTriangleUp /> : <GoTriangleDown />}
+        </StyledButtonSelect>
+        {isOpen && (
+          <StyledList>
+            {categoryList.map((el) => {
+              return  <StyledOptions key={el} onClick={() => handleOptionClick(el)}>
+              {el}
+            </StyledOptions>
+            })}
+          </StyledList>
+        )}
       </StyledWrpSelector>
-      {characteristicArray.map(({_id, name, value}) => {
-        console.log(_id, name, value)
-       return  <AddCharacteristicInputs
-          key={_id}
-          id={_id}
-          name={name}
-          value={value}
-          characteristicArray={characteristicArray}
-          setCharacteristicArray={setCharacteristicArray}
-          
-        />
+      {characteristicArray.map(({ _id, name, value }) => {
+        console.log(_id, name, value);
+        return (
+          <AddCharacteristicInputs
+            key={_id}
+            id={_id}
+            name={name}
+            value={value}
+            characteristicArray={characteristicArray}
+            setCharacteristicArray={setCharacteristicArray}
+          />
+        );
       })}
       <FakeInputWrp>
         <FakeInputText>Додати характеристику</FakeInputText>
@@ -217,7 +229,7 @@ const ProductForm = ({openModal}) => {
           onClick={() => {
             const id = nanoid();
             setCharacteristicArray((prevState) => {
-              return [...prevState, { _id: id, name: '', value: '' }];
+              return [...prevState, { _id: id, name: "", value: "" }];
             });
             return;
           }}
@@ -271,39 +283,43 @@ const ProductForm = ({openModal}) => {
           </FakeInputWrp>
         </label>
       ) : (
-       <>
-        <ul>
-      { productImagesUrl.map((photo, index) => 
-        (<StyledInputWrapperPhoto key={photo}>
-          <StyledCoverLabel htmlFor="">Назва зображення</StyledCoverLabel>
-          <StyledImg src={photo} alt="photo" />
-          <StyledInput type="text" value={`${index+1}.jpeg`} readOnly />
-          <StyledButtonDelete 
-          onClick={()=> handleDeletePhotoImg(photo)}>
-            <RiDeleteBin6Line size={"1.8em"} color="white" />
-          </StyledButtonDelete>
-        </StyledInputWrapperPhoto>
-        ))}
-      </ul>
-         <label>
-         <FileInput
-           type="file"
-           multiple
-           onChange={handleProductImagesChange}
-           accept=".jpg, .jpeg"
-         />
-         <FakeInputWrp>
-           <FakeInputText>Додати зображення</FakeInputText>
-           <FakeButton>
-             <BiPlusCircle size={"1.5em"} />
-           </FakeButton>
-         </FakeInputWrp>
-       </label>
-       </>
+        <>
+          <ul>
+            {productImagesUrl.map((photo, index) => (
+              <StyledInputWrapperPhoto key={photo}>
+                <StyledCoverLabel htmlFor="">Назва зображення</StyledCoverLabel>
+                <StyledImg src={photo} alt="photo" />
+                <StyledInput type="text" value={`${index + 1}.jpeg`} readOnly />
+                <StyledButtonDelete onClick={() => handleDeletePhotoImg(photo)}>
+                  <RiDeleteBin6Line size={"1.8em"} color="white" />
+                </StyledButtonDelete>
+              </StyledInputWrapperPhoto>
+            ))}
+          </ul>
+          <label>
+            <FileInput
+              type="file"
+              multiple
+              onChange={handleProductImagesChange}
+              accept=".jpg, .jpeg"
+            />
+            <FakeInputWrp>
+              <FakeInputText>Додати зображення</FakeInputText>
+              <FakeButton>
+                <BiPlusCircle size={"1.5em"} />
+              </FakeButton>
+            </FakeInputWrp>
+          </label>
+        </>
       )}
-      <SubmitButton type="submit"
-      disabled={(!productName || !productCode || !price || !manufacturerCountry)}
-      >Зберегти</SubmitButton>
+      <SubmitButton
+        type="submit"
+        disabled={
+          !productName || !productCode || !price || !manufacturerCountry
+        }
+      >
+        Зберегти
+      </SubmitButton>
     </StyledForm>
   );
 };

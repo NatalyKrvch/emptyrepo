@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import ProductList from "../../components/ProductList/ProductList";
 import {
+  StyledBtnDeleteSearch,
   StyledBtnSearch,
   StyledButton,
   StyledFragment,
@@ -9,9 +10,10 @@ import {
   StyledTitle,
 } from "./ProductsCataloguePageStyled";
 import { FiFilter } from "react-icons/fi";
+import { RxCrossCircled } from "react-icons/rx"
 import { useEffect } from "react";
 import { useState } from "react";
-import { getAllProducts } from "../../redux/Product/productSelectors";
+import { getAllProducts, getTotalItems } from "../../redux/Product/productSelectors";
 import { getProducts } from "../../redux/Product/productOperations";
 import Pagination from "../../components/Pagination/Pagination";
 import { useMediaRules } from "../../hooks/useMediaRules";
@@ -21,29 +23,34 @@ import ModalDeleteProduct from "../../components/Modal/ModalChangeCatalog/ModalD
 import { getIsLoggedIn } from "../../redux/Auth/authSelectors";
 import { AiOutlineSearch } from "react-icons/ai";
 import Notiflix from "notiflix";
+import ModalDeleteSuccess from "../../components/Modal/ModalDeleteSuccess/ModalDeleteSuccess";
+import { Portal } from "../../components/Modal/Portal/Portal";
 
 const ProductsCataloguePage = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [perPage, setPerPage] = useState(4);
   const [showModalFilter, setShowModalFilter] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [modalDeleteSuccessOpen, setModalDeleteSuccessOpen] = useState(false);
   const [productCode, setProductCode] = useState("");
   const [productId, setProductId] = useState("");
   const [updatedProductList, setUpdatedProductList] = useState([]);
   const [filterByCode, setFilterByCode] = useState("");
-  // const [totalProducts, setTotalPoducts] = useState([]);
+  
+
 
   const { isMobile, isTablet } = useMediaRules();
   const dispatch = useDispatch();
   const products = useSelector(getAllProducts);
+  const pageQty = useSelector(getTotalItems)
   console.log(products);
   const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams);
   const query = searchParams.get("query");
+  const article = searchParams.get("article");
 
   const isLoggedIn = useSelector(getIsLoggedIn);
-  // const lastProductIndex = pageNumber * perPage;
-  // const firstProductIndex = lastProductIndex - perPage;
-  // const currentProducts = products.slice(firstProductIndex, lastProductIndex);
+ 
 
   useEffect(() => {
     let newPerPage = 8;
@@ -58,8 +65,12 @@ const ProductsCataloguePage = () => {
   }, [isMobile, isTablet]);
 
   useEffect(() => {
-    dispatch(getProducts({ page: pageNumber, per_page: perPage }));
-  }, [pageNumber]);
+    dispatch(getProducts({ 
+      page: pageNumber,
+      per_page: perPage, 
+      article, 
+      filter: query}));
+  }, [pageNumber, perPage, article, query]);
 
   useEffect(() => {
     setUpdatedProductList(products);
@@ -112,20 +123,24 @@ const ProductsCataloguePage = () => {
     setProductId(id);
   };
 
+  const handleDeleteSuccessModal = () => {
+     setModalDeleteSuccessOpen(!modalDeleteSuccessOpen);
+  };
+
   const closeModalDelete = () => {
     setIsModalDeleteOpen(false);
   };
   const handleChangeFilterByCode = (ev) => setFilterByCode(ev.target.value);
 
-  const handleOnSearchButton = (code) => {
-    const allProducts = dispatch(getAllProducts());
-    const productByCode = allProducts.filter(el => el.productCode === code);
-    if(productByCode){
-      setUpdatedProductList(productByCode);
-    } else {
-      Notiflix.Notify.failure("Продукт з таким ім'ям не знайдено")
-    }
-  };
+  // const handleOnSearchButton = (code) => {
+  //   const allProducts = dispatch(getAllProducts());
+  //   const productByCode = allProducts.filter(el => el.productCode === code);
+  //   if(productByCode){
+  //     setUpdatedProductList(productByCode);
+  //   } else {
+  //     Notiflix.Notify.failure("Продукт з таким ім'ям не знайдено")
+  //   }
+  // };
 
   return (
     <StyledFragment>
@@ -133,17 +148,28 @@ const ProductsCataloguePage = () => {
         <ModalFilter onCloseModal={closeModal} onSubmit={handleSubmit} />
       )}
       {isModalDeleteOpen && (
-        <ModalDeleteProduct
-          onClose={closeModalDelete}
-          code={productCode}
-          id={productId}
-          products={updatedProductList}
-          setUpdatedProductList={setUpdatedProductList}
+        <Portal>
+          <ModalDeleteProduct
+            onClose={closeModalDelete}
+            code={productCode}
+            id={productId}
+            products={updatedProductList}
+            setUpdatedProductList={setUpdatedProductList}
+            onOpenDeleteSuccessModal={handleDeleteSuccessModal}
+          />
+        </Portal>
+      )}
+      {modalDeleteSuccessOpen && (
+        <ModalDeleteSuccess
+          onClose={handleDeleteSuccessModal}
+          title={"Картка успішно видалена"}
         />
       )}
       {isLoggedIn && (
         <StyledInputWrp>
-          <StyledBtnSearch onClick={() => handleOnSearchButton(filterByCode)}>
+          <StyledBtnSearch onClick={()=> {
+            setSearchParams({article: filterByCode });
+        }}>
             <AiOutlineSearch size={"1.8em"} />
           </StyledBtnSearch>
           <StyledInput
@@ -152,13 +178,22 @@ const ProductsCataloguePage = () => {
             value={filterByCode}
             onChange={handleChangeFilterByCode}
           />
+          { filterByCode && 
+          <StyledBtnDeleteSearch onClick={() => {
+            setSearchParams({});
+            setFilterByCode('')}}>
+            <RxCrossCircled size={'1.5em'}/>
+          </StyledBtnDeleteSearch> }
         </StyledInputWrp>
       )}
       <StyledTitle>Каталог товарів</StyledTitle>
-      {!isLoggedIn && <StyledButton onClick={() => openModal()}>
-        <FiFilter size={"1.5em"} />
-        Фільтрувати
-      </StyledButton>}
+      {!isLoggedIn && (
+        <StyledButton onClick={!query? () => openModal() : () => setSearchParams({})}>
+         {!query && <FiFilter size={"1.5em"} />}
+         {query? `${query}` : 'Фільтрувати'}
+         {query && <RxCrossCircled/> }
+        </StyledButton>
+      )}
       {products.length !== 0 && (
         <ProductList
           productsList={updatedProductList}

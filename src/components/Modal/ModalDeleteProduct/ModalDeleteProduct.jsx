@@ -6,14 +6,16 @@ import lampRed from "../../../../images/Popup/lamp-red@1x.png"
 import { removeProduct } from "../../../../redux/Product/productOperations";
 
 
-const ModalDeleteProduct = ({onClose, code, id, products, setUpdatedProductList}) => {
+const ModalDeleteProduct = ({onClose, code, id, products, setUpdatedProductList, onOpenDeleteSuccessModal}) => {
     const dispatch = useDispatch();
+    
 
     const handleDelete = (id) => {
        const updatedList = products.filter(el => el._id !== id);
        dispatch(removeProduct(id));
        setUpdatedProductList(updatedList)
        onClose();
+       onOpenDeleteSuccessModal();
     }
    
     return (

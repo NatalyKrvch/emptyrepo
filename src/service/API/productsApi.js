@@ -1,11 +1,13 @@
 import axios from "axios";
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const getProductsAPI = (page, per_page) => {
+export const getProductsAPI = (page, per_page, article, filter) => {
   axios.defaults.baseURL = `${baseURL}`;
   if (page && per_page) {
     return axios
-      .get(`/api/products?page=${page}&per_page=${per_page}`)
+      .get(
+        `/api/products?page=${page}&per_page=${per_page}&article=${article}&filter=${filter}`
+      )
       .then(({ data }) => {
         return data;
       });
