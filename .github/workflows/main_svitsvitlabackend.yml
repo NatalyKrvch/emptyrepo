@@ -20,10 +20,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "18.x"
+
       - name: Create .env
         run: |
           touch .env
           echo "${{ secrets.MY_VAR }}" >> .env
+          
       - name: npm install, build, and test
         run: |
           npm install
