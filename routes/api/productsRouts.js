@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const ctrl = require("../../controllers/productsContr");
-const { validateBody, isValidIdProduct, uploadCloudProduct, uploadCloudPhoto } = require("../../middlewars");
+const { validateBody, isValidIdProduct, uploadAzureProduct } = require("../../middlewars");
+
 const { schemaJoi } = require("../../models/product");
 
 router.get("/", ctrl.listProducts);
@@ -10,7 +11,7 @@ router.get("/:productId", isValidIdProduct, ctrl.getProductById);
 
 router.post(
   "/",
-  uploadCloudProduct,
+  uploadAzureProduct,
   validateBody(schemaJoi),
   ctrl.addProduct
 );
@@ -20,7 +21,7 @@ router.delete("/:productId", isValidIdProduct, ctrl.removeProduct);
 router.put(
   "/:productId",
   isValidIdProduct,
-  uploadCloudProduct,
+  uploadAzureProduct,
   validateBody(schemaJoi),
   ctrl.updateProduct
 );
