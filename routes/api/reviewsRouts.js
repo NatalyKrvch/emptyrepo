@@ -5,5 +5,6 @@ const { validateBody} = require("../../middlewars");
 const { reviewSchemaJoi } = require("../../models/review");
 
 router.post("/", validateBody(reviewSchemaJoi), ctrl.addReview);
+router.get("/", ctrl.getAllReviews);
 
 module.exports = router;

@@ -7,6 +7,12 @@ const addReview = async (req, res) => {
   res.status(201).json(answer);
 };
 
+const getAllReviews = async (_, res) => {
+  const answer = await Review.find({});
+  res.json(answer);
+};
+
 module.exports = {
   addReview: ctrlWrapper(addReview),
+  getAllReviews: ctrlWrapper(getAllReviews),
 };
