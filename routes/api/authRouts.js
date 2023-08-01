@@ -8,5 +8,6 @@ const {
 
 router.post("/login", validateBody(loginSchemaJoi), ctrl.login);
 router.get("/logout", authenticate, ctrl.logout);
+router.get("/current", authenticate, ctrl.getCurrentUser);
 
 module.exports = router;

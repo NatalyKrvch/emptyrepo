@@ -130,11 +130,13 @@ const uploadAzureProductMiddleware = (req, res, next) => {
     if (err) {
       return next(err);
     }
+
     req.files.productCoverURL &&
-      (req.body.productCoverURL = req.files.productCoverURL[0].url);
+      (req.body.productCoverURL =
+        req.files.productCoverURL[0].url.split("?se=")[0]);
     req.files.productPhotoURL &&
       (req.body.productPhotoURL = req.files.productPhotoURL.map(
-        ({ url }) => url
+        ({ url }) => url.split("?se=")[0]
       ));
     const PhotoURL = req.body.productPhotoURL || [];
     const PhotoUrlOld = req.body.productPhotoUrlOld
@@ -155,9 +157,11 @@ const uploadAzureCatalogMiddleware = (req, res, next) => {
       return next(err);
     }
     req.files.catalogCoverURL &&
-      (req.body.catalogCoverURL = req.files.catalogCoverURL[0].url);
+      (req.body.catalogCoverURL =
+        req.files.catalogCoverURL[0].url.split("?se=")[0]);
     req.files.catalogFileURL &&
-      (req.body.catalogFileURL = req.files.catalogFileURL[0].url);
+      (req.body.catalogFileURL =
+        req.files.catalogFileURL[0].url.split("?se=")[0]);
     next();
   });
 };

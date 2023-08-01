@@ -3,7 +3,6 @@ const { HttpError } = require("../helpers");
 
 const validateBody = (schema) => {
   const func = (req, res, next) => {
-    console.log("---validateBody", req.body);
     if (req.body.additionalAttributes) {
       req.body.additionalAttributes = JSON.parse(req.body.additionalAttributes);
     }

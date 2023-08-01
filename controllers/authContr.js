@@ -35,7 +35,14 @@ const logout = async (req, res) => {
   res.status(204).json({});
 };
 
+const getCurrentUser = async (req, res) => {
+   res.json({
+     accessToken: req.user.accessToken,
+   });
+};
+
 module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
+  getCurrentUser: ctrlWrapper(getCurrentUser),
 };
