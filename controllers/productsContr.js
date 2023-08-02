@@ -6,16 +6,16 @@ const listProducts = async (req, res) => {
   const { page = 1, per_page = 8, article, filter } = req.query;
   const skip = (page - 1) * per_page;
   let currentQuery = {};
-  if (article !== undefined||"null"||"") {
+  if (article !== undefined && article !== "null" && article !== "") {
     currentQuery = { productCode: article };
-  } else if (filter !== undefined || "null" || "") {
+  } else if (filter !== undefined && filter !== "null" && filter !== "") {
     currentQuery = { productCategory: filter };
   }
- 
   const answer = await Product.find(currentQuery, "-__v", {
     skip,
     limit:per_page,
   });
+  
 
   const count = await Product.find(currentQuery);
   res.json({ data: answer, total: count.length });
