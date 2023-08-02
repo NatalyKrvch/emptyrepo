@@ -3,8 +3,8 @@ const { Product } = require("../models/product");
 
 const listProducts = async (req, res) => {
   // --- pagination ---
-  const { page = 1, limit = 8, article, filter } = req.query;
-  const skip = (page - 1) * limit;
+  const { page = 1, per_page = 8, article, filter } = req.query;
+  const skip = (page - 1) * per_page;
   let currentQuery = {};
   if (article !== ("null" || "")) {
     currentQuery = { productCode: article };
@@ -14,7 +14,7 @@ const listProducts = async (req, res) => {
 
   const answer = await Product.find(currentQuery, "-__v", {
     skip,
-    limit,
+    per_page,
   });
 
   const count = await Product.find(currentQuery);
