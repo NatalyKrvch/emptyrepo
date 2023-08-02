@@ -6,13 +6,12 @@ const listProducts = async (req, res) => {
   const { page = 1, per_page = 8, article, filter } = req.query;
   const skip = (page - 1) * per_page;
   let currentQuery = {};
-  if (article !== undefined) {
+  if (article !== undefined||"null"||"") {
     currentQuery = { productCode: article };
-  } else if (filter !== undefined) {
+  } else if (filter !== undefined || "null" || "") {
     currentQuery = { productCategory: filter };
   }
-  console.log(currentQuery);
-  console.log("article", article);
+ 
   const answer = await Product.find(currentQuery, "-__v", {
     skip,
     limit:per_page,
