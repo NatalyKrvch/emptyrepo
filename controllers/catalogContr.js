@@ -6,10 +6,10 @@ const listCatalogs = async (req, res) => {
   const { page = 1, per_page = 8, catalogName } = req.query;
   const skip = (page - 1) * per_page;
   let currentQuery = {};
-  if (catalogName !== ("null" || "")) {
+  if (catalogName !== undefined) {
     currentQuery = { catalogName };
   }
-  const answer = await Catalog.find(currentQuery, "-__v", { skip, per_page });
+  const answer = await Catalog.find(currentQuery, "-__v", { skip, limit:per_page });
   const count = await Catalog.find({});
   res.json({ data: answer, total: count.length });
 };
