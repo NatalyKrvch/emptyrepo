@@ -13,9 +13,7 @@ const listCatalogs = async (req, res) => {
   ) {
     currentQuery = { catalogName };
   }
-  console.log("currentQuery", currentQuery);
   const answer = await Catalog.find(currentQuery, "-__v", { skip, limit:per_page });
-  console.log(answer);
   const count = await Catalog.find({});
   res.json({ data: answer, total: count.length });
 };
