@@ -2,13 +2,13 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { mongooseHandleError } = require("../helpers");
 
-const PRODUCT_IMG_PARAMS = {
-  dimensions: {
-    width: 473,
-  },
-  maxFileSize: 100000,
-  acceptableFileTypes: ["jpg", "jpeg", "png"],
-};
+// const PRODUCT_IMG_PARAMS = {
+//   dimensions: {
+//     width: 473,
+//   },
+//   maxFileSize: 100000,
+//   acceptableFileTypes: ["jpg", "jpeg", "png"],
+// };
 
 // const priceValidation = /^\d+(\.\d{1,2})?$/;
 
@@ -81,4 +81,4 @@ const schemaJoi = Joi.object({
 
 const Product = model("product", productSchema);
 
-module.exports = { Product, schemaJoi, PRODUCT_IMG_PARAMS };
+module.exports = { Product, schemaJoi };

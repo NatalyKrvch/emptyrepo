@@ -13,9 +13,8 @@ const listProducts = async (req, res) => {
   }
   const answer = await Product.find(currentQuery, "-__v", {
     skip,
-    limit:per_page,
+    limit: per_page,
   });
-  
 
   const count = await Product.find(currentQuery);
   res.json({ data: answer, total: count.length });
@@ -31,6 +30,14 @@ const getProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
+  const { productCode } = req.body;
+  const existingProduct = await Product.findOne({ productCode });
+  if (existingProduct) {
+    return res
+      .status(400)
+      .json({ error: "Product with the same productCode already exists" });
+  }
+
   const answer = await Product.create({ ...req.body });
   res.status(201).json(answer);
 };
@@ -45,7 +52,6 @@ const removeProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  console.log("CORTO START");
   const { productId } = req.params;
   const answer = await Product.findOneAndUpdate({ _id: productId }, req.body);
   if (!answer) {

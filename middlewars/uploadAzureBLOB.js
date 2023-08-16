@@ -6,14 +6,12 @@ const MulterAzureStorage =
 const { AZURE_STORAGE_ACCOUNT, AZURE_STORAGE_ACCESS_KEY } = process.env;
 
 const nameLogic = (req, file) => {
-  console.log(file.originalname);
   const extension = file.originalname.split(".").pop();
   return `${uuidv4()}.${extension}`;
   // return file.originalname;
 };
 
 const contentLogic = (req, file) => {
-  console.log(file);
   return file;
 };
 
