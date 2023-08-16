@@ -5,9 +5,10 @@ const { validateBody, authenticate} = require("../../middlewars");
 const {
   loginSchemaJoi,
 } = require("../../models/user");
+const isValidId = require("../../middlewars/isValidId");
 
 router.post("/login", validateBody(loginSchemaJoi), ctrl.login);
 router.get("/logout", authenticate, ctrl.logout);
-router.get("/current", authenticate, ctrl.getCurrentUser);
+router.post("/update-token", isValidId, ctrl.updateToken);
 
 module.exports = router;

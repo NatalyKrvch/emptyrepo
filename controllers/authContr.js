@@ -35,14 +35,23 @@ const logout = async (req, res) => {
   res.status(204).json({});
 };
 
-const getCurrentUser = async (req, res) => {
-   res.json({
-     accessToken: req.user.accessToken,
-   });
+const updateToken = async (req, res) => {
+const { id } = req.query;
+  const user = await User.findOne({ _id:id });
+  if (!user) {
+    throw HttpError(401, "User not found");
+  }
+  const payload = { id: user._id };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(user._id, { token });
+
+  res.json({
+    accessToken: token,
+  });
 };
 
 module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
-  getCurrentUser: ctrlWrapper(getCurrentUser),
+  updateToken: ctrlWrapper(updateToken),
 };
