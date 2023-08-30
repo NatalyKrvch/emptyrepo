@@ -112,6 +112,8 @@ const uploadAzureProduct = multer({
 const uploadAzureCatalog = multer({
   storage: azureStorage,
   fileFilter: (req, file, cb) => {
+    // console.log("MULTER-REQ", req);
+    console.log("MULTER-FILE", file);
     if (file.mimetype.startsWith("image/")) {
       photoFilter(req, file, cb);
     } else {
@@ -154,6 +156,7 @@ const uploadAzureCatalogMiddleware = (req, res, next) => {
     if (err) {
       return next(err);
     }
+
     req.files.catalogCoverURL &&
       (req.body.catalogCoverURL =
         req.files.catalogCoverURL[0].url.split("?se=")[0]);

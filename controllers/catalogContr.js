@@ -11,7 +11,7 @@ const listCatalogs = async (req, res) => {
     catalogName !== "null" &&
     catalogName !== ""
   ) {
-    currentQuery = { catalogName };
+    currentQuery = { catalogName: { $regex: catalogName, $options: "i" } }; ;
   }
   const answer = await Catalog.find(currentQuery, "-__v", { skip, limit:per_page });
   const count = await Catalog.find(currentQuery);

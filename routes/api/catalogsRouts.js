@@ -9,7 +9,6 @@ const {
 } = require("../../middlewars");
 const { catalogSchemaJoi } = require("../../models/catalog");
 
-
 router.get("/", ctrl.listCatalogs);
 router.post(
   "/",
